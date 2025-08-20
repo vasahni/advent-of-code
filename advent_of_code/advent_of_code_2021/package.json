@@ -1,0 +1,17 @@
+{
+  "name": "advent_of_code_2021",
+  "version": "1.0.0",
+  "description": "Project is set of solutions ot advent of code 2021 challenges",
+  "main": "main.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^16.11.11"
+  },
+  "devDependencies": {
+    "jasmine": "^3.10.0"
+  }
+}

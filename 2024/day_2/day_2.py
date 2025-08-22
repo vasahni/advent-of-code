@@ -6,24 +6,12 @@ class Safety(Enum):
     SAFE = auto()
 
 
-# TODO: convert using all and map
-def is_increasing(row: list[int]):
-    previous = row[0]
-    for current in row[1:]:
-        if previous > current:
-            return False
-        previous = current
-    return True
+def is_increasing(row: list[int]) -> bool:
+    return all(row[i] < row[i + 1] for i in range(len(row) - 1))
 
 
-# TODO: convert using all and map
-def is_decreasing(row: list[int]):
-    previous = row[0]
-    for current in row[1:]:
-        if previous < current:
-            return False
-        previous = current
-    return True
+def is_decreasing(row: list[int]) -> bool:
+    return all(row[i] > row[i + 1] for i in range(len(row) - 1))
 
 
 def is_monotonic(row: list[int]) -> bool:
@@ -31,13 +19,7 @@ def is_monotonic(row: list[int]) -> bool:
 
 
 def check_differences(row: list[int]) -> bool:
-    previous = row[0]
-    for current in row[1:]:
-        diff = abs(current - previous)
-        if diff < 1 or diff > 3:
-            return False
-        previous = current
-    return True
+    return all(1 <= abs(row[i] - row[i + 1]) <= 3 for i in range(len(row) - 1))
 
 
 def check_safety(row: list[int]) -> Safety:
@@ -47,16 +29,13 @@ def check_safety(row: list[int]) -> Safety:
 
 
 def run():
-    counter = {"Safe": 0, "Unsafe": 0}
+    safe = 0
     with open("input.txt", "r") as f:
         for line in f:
-            split_line = line.split(" ")
-            split_line = list(map(int, split_line))
-            if check_safety(split_line) == Safety.SAFE:
-                counter["Safe"] += 1
-            else:
-                counter["Unsafe"] += 1
-    print(counter)
+            row = list(map(int, line.strip().split(" ")))
+            if check_safety(row) == Safety.SAFE:
+                safe += 1
+    print(f"Total safe: {safe}")
 
 
 if __name__ == "__main__":

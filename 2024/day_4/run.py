@@ -1,27 +1,20 @@
-def horizontal_forward(mapping) -> int:
+TARGET = "XMAS"
+Mapping = dict[tuple[int, int], str]
+
+
+def horizontal_forward(mapping: Mapping, height: int, width: int) -> int:
     count = 0
-    for x in range(1, 141):
-        first = 1
-        second = 2
-        third = 3
-        fourth = 4
-        while fourth <= 140:
-            combined = (
-                mapping[x, first]
-                + mapping[x, second]
-                + mapping[x, third]
-                + mapping[x, fourth]
-            )
-            if combined == "XMAS":
+    for x in range(1, height + 1):
+        for start_col in range(1, width - len(TARGET) + 2):
+            word = "".join(mapping[x, start_col + i] for i in range(len(TARGET)))
+            if word == TARGET:
                 count += 1
-            first, second, third, fourth = first + 1, second + 1, third + 1, fourth + 1
-    print(f"Horizontal Forward Total: {count}")
     return count
 
 
-def find_sequences(mapping: dict[tuple[int, int], str]) -> int:
+def find_sequences(mapping: Mapping, height: int, width: int) -> int:
     total_count = 0
-    count = horizontal_forward(mapping)
+    count = horizontal_forward(mapping, height, width)
     total_count += count
     return total_count
 
@@ -29,15 +22,17 @@ def find_sequences(mapping: dict[tuple[int, int], str]) -> int:
 def run():
     mapping = {}
     with open("input.txt", "r") as file:
-        x = 1
+        height = 1
         for line in file:
-            for y, char in enumerate(line, start=1):
+            width = 1
+            for char in line:
                 if char == "\n":
                     continue
-                mapping[(x, y)] = char
-            x += 1
-    count = find_sequences(mapping)
-    print(f"Total XMAS: {count}")
+                mapping[(height, width)] = char
+                width += 1
+            height += 1
+    count = find_sequences(mapping, height - 1, width - 1)
+    print(f"Total Count: {count}")
 
 
 if __name__ == "__main__":
